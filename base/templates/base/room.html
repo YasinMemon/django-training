@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Room Details</h1>
-    <p>Name: {{ room.name }}</p>
-    <p>Description: {{ room.description }}</p>
-    <p>Created at: {{ room.created_at }}</p>
-  </body>
-</html>
+{% extends "main.html" %} {% block content %}
+<h1>Room Details</h1>
+<p>Name: {{ room.name }}</p>
+<p>Description: {{ room.description }}</p>
+<p>Created at: {{ room.created }}</p>
+<p>Updated at: {{ room.updated }}</p>
+<p>Created by: {{ room.host.username }}</p>
+<p>Topic: {{ room.topic.name }}</p>
+
+<h2>Messages</h2>
+{% if messages %}
+<ul>
+  {% for message in messages %}
+  <li>
+    {{ message.content }} - {{ message.created }} by {{ message.user.username }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No messages in this room.</p>
+{% endif %} {% endblock %}
