@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container">
+        <h1 class="mt-5">Delete {{obj}}</h1>
+        <p>Are you sure you want to delete "{{ obj }}"?</p>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{{request.META.HTTP_REFERER}}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete Room</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

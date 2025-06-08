@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Create a New Room</h1>
+    <div>
+        <a href="{% url 'home' %}" class="btn btn-link mb-3">Back to Home</a>
+    </div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Create Room</button>
+    </form>
+</div>
+
+    {% if messages %}       
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-info" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
