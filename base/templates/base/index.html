@@ -57,12 +57,15 @@
       {% if rooms %} {% for room in rooms %}
       <div class="card mb-3">
         <div class="card-body">
+          {% if request.user == room.host %}
+          <span class="badge bg-success">You are the host</span>
           <a href="{% url 'update-room' room.id %}" class="btn btn-secondary"
             >Edit</a
           >
           <a href="{% url 'delete-room' room.id %}" class="btn btn-secondary"
             >Delete</a
           >
+          {% endif %}
           <span>@{{room.host.username}}</span><br />
           <a href="{% url 'room' room.id %}" class="btn btn-primary"
             >{{room.name}}</a

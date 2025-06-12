@@ -1,6 +1,6 @@
-{% extends 'main.html' %} {% block content %}
+{% extends 'main.html' %} {% block content %} {% if page == 'login' %}
 <form method="POST" class="container">
-  <h1>Login / Register</h1>
+  <h1>login</h1>
   {% csrf_token %}
   <div class="form-group">
     <label for="username">Username:</label>
@@ -24,4 +24,21 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-{% endblock %}
+<div>
+  <p class="container">
+    haven't registered yet?
+    <a class="btn btn-primary" href="{% url 'register' %}">Signup</a>
+  </p>
+</div>
+{% else %}
+<form method="POST" class="container">
+  <h1>Register</h1>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Register</button>
+</form>
+<p class="container">
+  already have an account?
+  <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+</p>
+{% endif %} {% endblock %}
