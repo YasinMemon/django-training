@@ -1,1 +1,54 @@
-myenv
+# ====================================
+# ⚙️ PYTHON / DJANGO .GITIGNORE FILE
+# ====================================
+
+# 🧪 Byte-compiled / compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 🔒 Environment variables / secrets
+.env
+.env.*
+
+# 🚫 Virtual environment
+venv/
+env/
+myenv/
+
+# 📦 Python packaging
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ⚙️ Django specific
+db.sqlite3
+/staticfiles/
+/media/
+/*.log
+
+# 📦 Dependency files
+pip-log.txt
+
+# 🧠 VSCode / IDEs
+.vscode/
+.idea/
+
+# ⚙️ MacOS
+.DS_Store
+
+# 🚀 Deployment files (optional)
+*.sqlite3
+local_settings.py
+
+# 💥 Test result logs
+htmlcov/
+coverage.xml
+*.cover
+.cache
+
+# 📜 Migrations (Optional: include if you want clean setup)
+**/migrations/
+!**/migrations/__init__.py
