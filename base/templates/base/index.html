@@ -24,6 +24,22 @@
     padding: 20px 0 20px 0;
     min-width: 0;
   }
+
+  .activities-sections {
+    flex: 0 0 300px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-left: 1px solid #dee2e6;
+    height: 100%;
+    min-height: 90vh;
+  }
+  .activity-card {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
 </style>
 
 <div class="home-container">
@@ -49,7 +65,7 @@
   </div>
   <div class="rooms-section">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="mt-5">Home Page</h1>
+      <h3 class="mt-5">Hello, {{ request.user }} 👋</h3>
       <span>{{room_count}} rooms available</span>
       <a href="{% url 'create-room' %}" class="btn btn-primary">Create Room</a>
     </div>
@@ -80,6 +96,17 @@
       </div>
       {% endif %}
     </div>
+  </div>
+  <div class="activities-sections">
+    <h3>Recent Activities</h3>
+    <hr />
+    {% for msg in msgs %}
+    <div class="activity-card">
+      <small>{{ msg.user }} {{msg.created|timesince}} ago</small>
+      <small>replied to {{msg.room}}</small>
+      <p>{{ msg }}</p>
+    </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}
