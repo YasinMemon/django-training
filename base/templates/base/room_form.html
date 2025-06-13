@@ -1,25 +1,20 @@
 {% extends 'main.html' %}
 {% block content %}
-<div class="container">
-    <h1 class="mt-5">Create a New Room</h1>
-    <div>
-        <a href="{% url 'home' %}" class="btn btn-link mb-3">Back to Home</a>
+<div class="max-w-xl mx-auto px-4 py-10">
+    <div class="bg-gray-800 rounded-xl shadow-lg p-8">
+        <h1 class="text-2xl font-bold text-indigo-300 mb-6">Create a New Room</h1>
+        <a href="{% url 'home' %}" class="text-indigo-400 hover:underline mb-4 inline-block">&larr; Back to Home</a>
+        <form method="POST" action="" class="space-y-6 mt-4">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold transition">Create Room</button>
+        </form>
     </div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" class="btn btn-primary">Create Room</button>
-    </form>
-</div>
-
     {% if messages %}       
-    <div class="container mt-3">
+    <div class="mt-6 space-y-2">
         {% for message in messages %}
-            <div class="alert alert-info" role="alert">
-                {{ message }}
-            </div>
+            <div class="bg-green-700 text-white rounded px-4 py-2 shadow">{{ message }}</div>
         {% endfor %}
-
     </div>
     {% endif %}
 </div>
