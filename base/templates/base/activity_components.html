@@ -1,0 +1,26 @@
+<aside
+  class="w-full md:w-80 bg-gray-800 rounded-xl p-6 shadow-lg flex-shrink-0"
+>
+  <h3 class="text-xl font-bold text-gray-100 mb-4">Recent Activities</h3>
+  <div class="border-b border-gray-700 mb-4"></div>
+  <div class="space-y-4">
+    {% for msg in msgs %}
+    <div class="bg-gray-900 rounded-lg p-4 shadow flex flex-col">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-indigo-400 font-semibold">
+          <a href="{% url 'profile' msg.user.id %}"> {{ msg.user }} </a>
+        </span>
+        <span class="text-xs text-gray-400">{{msg.created|timesince}} ago</span>
+      </div>
+      <span class="text-gray-400 text-xs mb-1"
+        >replied to <span class="text-indigo-300">{{msg.room}}</span></span
+      >
+      <p class="text-gray-200">{{ msg }}</p>
+    </div>
+    {% empty %}
+    <div class="bg-gray-700 text-gray-300 rounded p-4">
+      No recent activities.
+    </div>
+    {% endfor %}
+  </div>
+</aside>

@@ -1,80 +1,30 @@
 {% extends 'main.html' %} {% block content %}
 <div class="flex flex-col md:flex-row gap-6 min-h-[80vh]">
   <!-- Sidebar -->
-  <aside class="w-full md:w-64 bg-gray-800 rounded-xl p-6 shadow-lg flex-shrink-0 mb-6 md:mb-0">
-    <h3 class="text-xl font-bold text-gray-100 mb-4">Browse Rooms</h3>
-    <div class="border-b border-gray-700 mb-4"></div>
-    {% if topics %}
-    <ul class="space-y-2">
-      <li>
-        <a href="{% url 'home' %}" class="block px-3 py-2 rounded-lg text-indigo-400 hover:bg-gray-700 transition">ALL</a>
-      </li>
-      {% for topic in topics %}
-      <li>
-        <a href="{% url 'home' %}?q={{ topic.name }}" class="block px-3 py-2 rounded-lg text-indigo-400 hover:bg-gray-700 transition">{{ topic.name }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <div class="bg-gray-700 text-gray-300 rounded p-3 mt-4">No topics available at the moment.</div>
-    {% endif %}
-  </aside>
-
+  {% include 'base/topics_components.html' %}
   <!-- Main Content: Rooms -->
   <main class="flex-1">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-      <h3 class="text-2xl font-bold text-white">Hello, {{ request.user }} <span class="inline-block">👋</span></h3>
+    {% if request.user.is_authenticated %}
+    <div
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4"
+    >
+      <h3 class="text-2xl font-bold text-white">
+        Hello,
+        <span class="inline-block"> {{request.user}} 👋</span>
+      </h3>
       <div class="flex items-center gap-4">
         <span class="text-gray-400">{{room_count}} rooms available</span>
-        <a href="{% url 'create-room' %}" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition">Create Room</a>
+        <a
+          href="{% url 'create-room' %}"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition"
+          >Create Room</a
+        >
       </div>
     </div>
-    <div class="space-y-4">
-      {% if rooms %}
-        {% for room in rooms %}
-        <div class="bg-gray-800 rounded-xl shadow-lg p-5 flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-indigo-400 font-semibold">@{{room.host.username}}</span>
-              {% if request.user == room.host %}
-                <span class="ml-2 bg-green-600 text-white text-xs px-2 py-1 rounded">You are the host</span>
-              {% endif %}
-            </div>
-            <a href="{% url 'room' room.id %}" class="text-lg font-bold text-indigo-300 hover:underline">{{room.name}}</a>
-            <div class="text-gray-400 text-sm mt-1">{{room.topic}}</div>
-          </div>
-          <div class="flex gap-2 mt-4 md:mt-0">
-            {% if request.user == room.host %}
-              <a href="{% url 'update-room' room.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition text-sm">Edit</a>
-              <a href="{% url 'delete-room' room.id %}" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition text-sm">Delete</a>
-            {% endif %}
-          </div>
-        </div>
-        {% endfor %}
-      {% else %}
-        <div class="bg-gray-700 text-gray-300 rounded p-4">No rooms available at the moment.</div>
-      {% endif %}
-    </div>
+    {% endif %} {% include 'base/feed_component.html' %}
   </main>
 
   <!-- Activities -->
-  <aside class="w-full md:w-80 bg-gray-800 rounded-xl p-6 shadow-lg flex-shrink-0">
-    <h3 class="text-xl font-bold text-gray-100 mb-4">Recent Activities</h3>
-    <div class="border-b border-gray-700 mb-4"></div>
-    <div class="space-y-4">
-      {% for msg in msgs %}
-      <div class="bg-gray-900 rounded-lg p-4 shadow flex flex-col">
-        <div class="flex items-center justify-between mb-1">
-          <span class="text-indigo-400 font-semibold">{{ msg.user }}</span>
-          <span class="text-xs text-gray-400">{{msg.created|timesince}} ago</span>
-        </div>
-        <span class="text-gray-400 text-xs mb-1">replied to <span class="text-indigo-300">{{msg.room}}</span></span>
-        <p class="text-gray-200">{{ msg }}</p>
-      </div>
-      {% empty %}
-      <div class="bg-gray-700 text-gray-300 rounded p-4">No recent activities.</div>
-      {% endfor %}
-    </div>
-  </aside>
+  {% include 'base/activity_components.html' %}
 </div>
 {% endblock %}
