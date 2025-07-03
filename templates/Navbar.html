@@ -6,25 +6,59 @@
         <a class="text-2xl font-bold text-white" href="{% url 'home' %}">StudyBud</a>
       </div>
       <div class="flex-1 flex items-center justify-center">
-        <ul class="flex space-x-6">
-          <li><a class="text-gray-200 hover:text-indigo-400 transition font-medium" href="{% url 'home' %}">Home</a></li>
-          <li><a class="text-gray-200 hover:text-indigo-400 transition font-medium" href="#">Features</a></li>
-          <li><a class="text-gray-200 hover:text-indigo-400 transition font-medium" href="#">Pricing</a></li>
-        </ul>
-        <form method="GET" action="{% url 'home' %}" class="ml-6 flex">
-          <input class="rounded-l bg-gray-700 text-gray-100 px-3 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-400" type="text" placeholder="Search..." aria-label="Search" name="q" />
-          <button class="rounded-r bg-indigo-500 hover:bg-indigo-600 px-3 py-1 text-white" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" /></svg>
+        <form method="GET" action="{% url 'home' %}" class="w-full max-w-xl flex">
+          <input
+            class="flex-1 rounded-l-lg bg-gray-700 text-gray-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-lg"
+            type="text"
+            placeholder="Search for rooms, topics, or users..."
+            aria-label="Search"
+            name="q"
+          />
+          <button
+            class="rounded-r-lg bg-indigo-500 hover:bg-indigo-600 px-5 py-2 text-white text-lg"
+            type="submit"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+            </svg>
           </button>
         </form>
       </div>
       <div class="flex items-center gap-2">
         {% if user.is_authenticated %}
-        <a href="logout" class="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded transition font-semibold">Logout</a>
+        <!-- Profile dropdown -->
+        <div class="relative ml-2" id="profileDropdownContainer">
+          <button id="profileDropdownBtn" type="button" class="flex items-center focus:outline-none">
+            <span class="inline-block h-9 w-9 rounded-full bg-gray-600 flex items-center justify-center text-white text-lg font-bold">
+              {{ user.username|slice:":1"|upper }}
+            </span>
+            <svg class="ml-1 w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="profileDropdownMenu" class="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded shadow-lg py-2 z-20 hidden">
+            <a href="{% url 'update-profile' %}" class="block px-4 py-2 text-gray-100 hover:bg-gray-700">Edit Profile</a>
+            <a href="logout" class="block px-4 py-2 text-gray-100 hover:bg-gray-700">Logout</a>
+          </div>
+        </div>
+        <script>
+          const btn = document.getElementById('profileDropdownBtn');
+          const menu = document.getElementById('profileDropdownMenu');
+          const container = document.getElementById('profileDropdownContainer');
+
+          btn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            menu.classList.toggle('hidden');
+          });
+
+          document.addEventListener('click', function(event) {
+            if (!container.contains(event.target)) {
+              menu.classList.add('hidden');
+            }
+          });
+        </script>
         {% else %}
         <a href="{% url 'login' %}" class="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded transition font-semibold">Login</a>
-        {% endif %}
         <a href="{% url 'register' %}" class="text-white bg-gray-700 hover:bg-indigo-400 px-4 py-2 rounded transition font-semibold">Register</a>
+        {% endif %}
       </div>
     </div>
   </div>

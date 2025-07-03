@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse
-from .forms import RoomForm
+
+from .forms import RoomForm, UserForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -150,6 +151,16 @@ def userProfile(request,pk):
     context = {"user": user, "rooms":rooms, "room_msgs": room_msgs, "topics": topics, "msgs":room_msgs }
     return render(request, 'base/profile.html', context)
 
-def updateUser(request):
-    context = {}
-    return render(request, "base/update_profile.html")
+@login_required(login_url='login')
+def updateProfile(request):
+    user = request.user
+    form = UserForm(instance=user)
+    
+    if request.method == "POST":
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile", pk=user.id)
+
+    context = {"form" : form}
+    return render(request, "base/update_profile.html", context)
