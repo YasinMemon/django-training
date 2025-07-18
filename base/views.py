@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.http import HttpResponse
 
-from .forms import RoomForm, UserForm
+from .forms import RoomForm, UserForm, ProfileForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Room, Topic, Message
+from .models import Room, Topic, Message, Profile
 
 # Create your views here.
 
@@ -154,13 +154,17 @@ def userProfile(request,pk):
 @login_required(login_url='login')
 def updateProfile(request):
     user = request.user
-    form = UserForm(instance=user)
-    
+    profile, created = Profile.objects.get_or_create(user=user)
+    user_form = UserForm(instance=user)
+    profile_form = ProfileForm(instance=profile)
+
     if request.method == "POST":
-        form = UserForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
             return redirect("profile", pk=user.id)
 
-    context = {"form" : form}
+    context = {"user_form": user_form, "profile_form": profile_form}
     return render(request, "base/update_profile.html", context)
